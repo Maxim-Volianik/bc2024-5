@@ -89,29 +89,6 @@ app.post('/write', upload.none(), (req, res) => {
   res.status(201).send('Note created');
 });
 
-// 6. GET /UploadForm.html - HTML форма для завантаження нотатки
 app.get('/UploadForm.html', (req, res) => {
-  res.send(`
-<!DOCTYPE html>
-<html>
-
-<body>
-
-  <h2>Upload Form</h2>
-
-  <form method="post" action="/write" enctype="multipart/form-data">
-    <label for="note_name_input">Note Name:</label><br>
-    <input type="text" id="note_name_input" name="note_name"><br><br>
-    <label for="note_input">Note:</label><br>
-    <textarea id="note_input" name="note" rows="4" cols="50"></textarea><br><br>
-    <button>Upload</button>
-  </form>
-
-  <p>If you click the "Submit" button, the form-data will be sent to a page called "/upload".</p>
-
-</body>
-
-</html>
-  `);
+  res.sendFile(path.join(__dirname, 'UploadForm.html'));
 });
-
