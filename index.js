@@ -32,11 +32,9 @@ server.listen(options.port, options.host, () => {
   console.log(`Server running at http://${options.host}:${options.port}/`);
 });
 
-// Middleware для обробки JSON та форми
 app.use(express.json());
 const upload = multer();
 
-// 1. GET /notes/<ім’я нотатки>
 app.get('/notes/:noteName', (req, res) => {
   const notePath = path.join(cacheDir, req.params.noteName + '.txt');
   if (!fs.existsSync(notePath)) {
@@ -46,7 +44,6 @@ app.get('/notes/:noteName', (req, res) => {
   res.send(noteContent);
 });
 
-// 2. PUT /notes/<ім’я нотатки>
 app.put('/notes/:noteName', express.text(), (req, res) => {
   const notePath = path.join(cacheDir, req.params.noteName + '.txt');
   if (!fs.existsSync(notePath)) {
@@ -56,7 +53,6 @@ app.put('/notes/:noteName', express.text(), (req, res) => {
   res.send('Note updated');
 });
 
-// 3. DELETE /notes/<ім’я нотатки>
 app.delete('/notes/:noteName', (req, res) => {
   const notePath = path.join(cacheDir, req.params.noteName + '.txt');
   if (!fs.existsSync(notePath)) {
@@ -66,7 +62,6 @@ app.delete('/notes/:noteName', (req, res) => {
   res.send('Note deleted');
 });
 
-// 4. GET /notes - Отримання всіх нотаток
 app.get('/notes', (req, res) => {
   const notes = fs.readdirSync(cacheDir).map(file => {
     const noteName = path.parse(file).name;
@@ -76,7 +71,6 @@ app.get('/notes', (req, res) => {
   res.json(notes);
 });
 
-// 5. POST /write - Додавання нової нотатки
 app.post('/write', upload.none(), (req, res) => {
   const { note_name, note } = req.body;
   const notePath = path.join(cacheDir, note_name + '.txt');
